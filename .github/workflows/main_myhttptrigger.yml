@@ -27,18 +27,16 @@ jobs:
 
     # Restore dependencies
     - name: Restore
-      run: dotnet restore
+      run: dotnet restore FunctionApp1/FunctionApp1.csproj
 
     # Build
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build FunctionApp1/FunctionApp1.csproj -c Release --no-restore
 
     # Publish Function App
     - name: Publish
       run: |
-        dotnet publish \
-          --configuration Release \
-          --output ./publish
+        dotnet publish FunctionApp1/FunctionApp1.csproj -c Release -o publish
 
         uses: azure/login@v2
         with:
@@ -50,6 +48,7 @@ jobs:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME}}
         publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
         package: ./publish
+
 
 
 
